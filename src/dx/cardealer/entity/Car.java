@@ -1,5 +1,8 @@
 package dx.cardealer.entity;
 
+import java.text.DecimalFormat;
+import java.util.Calendar;
+
 public class Car {
 
 	private int carId;			// DB serial ID (stubbed)
@@ -59,7 +62,10 @@ public class Car {
 					"The year must be set greater than 1908: " + year );
 		}
 		
-		
+		int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+		if( year > thisYear )
+			throw new IllegalArgumentException(
+					"The year entered is in the future: " + year );
 		
 		this.year = year;
 	}
@@ -77,7 +83,14 @@ public class Car {
 	}
 
 	public void setUsdPrice(double usdPrice) {
-		this.usdPrice = usdPrice;
+		if( usdPrice <= 0 )
+			throw new IllegalArgumentException(
+					"The price of cars must be greater than $0.00: " + usdPrice
+					);
+		
+		// truncate after 2 decimal places
+		DecimalFormat priceFormat = new DecimalFormat("#.00");
+		this.usdPrice = Double.valueOf(priceFormat.format(usdPrice));
 	}
 
 	public CarSize getSize() {
