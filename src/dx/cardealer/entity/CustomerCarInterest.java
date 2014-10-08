@@ -1,5 +1,7 @@
 package dx.cardealer.entity;
 
+import dx.cardealer.entity.cars.Car;
+
 public class CustomerCarInterest {
 	
 	private Customer customer;

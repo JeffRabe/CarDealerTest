@@ -1,4 +1,4 @@
-package dx.cardealer.entity;
+package dx.cardealer.entity.cars;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;

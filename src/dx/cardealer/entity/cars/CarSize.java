@@ -1,4 +1,4 @@
-package dx.cardealer.entity;
+package dx.cardealer.entity.cars;
 
 public enum CarSize {
 	Compact, MidSize, Large
