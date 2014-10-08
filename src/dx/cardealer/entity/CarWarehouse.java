@@ -16,15 +16,21 @@ public class CarWarehouse {
 	private HashMap<CarSize, Integer> warehouseCapacity;
 	private HashMap<CarMake, ArrayList<Car>> warehouseInventory;
 	
-	
+	/**
+	 * Create a new warehouse with the specified capacities for all
+	 * car sizes.
+	 * @param initialCapacities a hashmap that contains an integer
+	 * 		  representing a capacity for each defined car size.
+	 */
 	public CarWarehouse( HashMap<CarSize, Integer> initialCapacities ){
 		
 		warehouseCapacity = new HashMap<CarSize, Integer>();
 		
 		for( CarSize size : CarSize.values() ){
 			if( !initialCapacities.containsKey(size) ){
-				throw new IllegalArgumentException(
-						"The following car size was not represented: " + size );
+				warehouseCapacity.put( size, 0 );
+				//throw new IllegalArgumentException(
+				//		"The following car size was not represented: " + size );
 			}
 			
 			int sizeCapacity = initialCapacities.get(size);
@@ -48,6 +54,13 @@ public class CarWarehouse {
 	
 	}
 	
+	/**
+	 * Add new cars to the warehouse inventory.
+	 * @param newInventory a list of Cars to be added to the
+	 * 		  warehouse inventory.
+	 * @throws WarehouseFullException if there is not space for all
+	 * 		   of the new inventory cars to be added to this warehouse.
+	 */
 	public void addNewCarInventory( List<Car> newInventory )
 	throws WarehouseFullException
 	{
@@ -66,19 +79,30 @@ public class CarWarehouse {
 		}
 	}
 	
+	/**
+	 * Determine if the warehouse has capacity for a list of new cars
+	 * 			 to be added to the inventory.
+	 * @param newInventory a list of cars to be added to the warehouse
+	 * 			inventory.
+	 * @return true if the warehouse has capacity, false otherwise.
+	 */
 	public boolean hasCapacityForCars( List<Car> newInventory ){
 		Iterator<Car> carItr = newInventory.iterator();
+		
+		// Track number of total cars for each car size.
 		HashMap<CarSize, Integer> newInventoryTotals = new HashMap<CarSize, Integer>();
 		
 		for( CarSize size : CarSize.values() )
 			newInventoryTotals.put(size, 0);
 		
+		// Iterate over cars and track how many of each size there are.
 		while( carItr.hasNext() ){
 			Car currentCar = carItr.next();
 			int sizeTotal = newInventoryTotals.get( currentCar.getSize() );
 			newInventoryTotals.put(currentCar.getSize(), ++sizeTotal );
 		}
 		
+		// if there are too many cars of any size, return false
 		for( CarSize size : newInventoryTotals.keySet() ){
 			int newCarTotal = newInventoryTotals.get(size);
 			int availableSpaces = getAvailableSpaces(size);
@@ -90,6 +114,12 @@ public class CarWarehouse {
 		return true;
 	}
 	
+	/**
+	 * Add a Car to the warehouse inventory.
+	 * @param newCar the Car to be added to the warehouse.
+	 * @throws WarehouseFullException if no space is available in the 
+	 * 			warehouse to store the car.
+	 */
 	public void addCar( Car newCar )
 	throws WarehouseFullException
 	{
@@ -103,10 +133,20 @@ public class CarWarehouse {
 		warehouseSpacesUsed.put( newCar.getSize(), ++spacesUsed );
 	}
 	
+	/**
+	 * Determine if a space is available for the passed CarSize.
+	 * @param size the CarSize in question.
+	 * @return true if spaces are available, false otherwise.
+	 */
 	public boolean spaceAvailable( CarSize size ){
 		return getAvailableSpaces(size) > 0;
 	}
 	
+	/**
+	 * return the number of available car spaces for the given car size.
+	 * @param size the CarSize in question.
+	 * @return the integer number of spaces available.
+	 */
 	public int getAvailableSpaces( CarSize size ){
 		return warehouseCapacity.get(size) - warehouseSpacesUsed.get(size);
 	}
