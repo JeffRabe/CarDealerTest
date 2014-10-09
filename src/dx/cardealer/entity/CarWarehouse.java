@@ -1,6 +1,7 @@
 package dx.cardealer.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import dx.cardealer.entity.cars.Car;
 import dx.cardealer.entity.cars.CarMake;
 import dx.cardealer.entity.cars.CarSize;
+import dx.cardealer.error.WarehouseEmptyException;
 import dx.cardealer.error.WarehouseFullException;
 
 public class CarWarehouse {
@@ -52,6 +54,19 @@ public class CarWarehouse {
 		this( initialCapacities );
 		addNewCarInventory( inventory );
 	
+	}
+	
+	/**
+	 * Recommend cars based on a Customer / Prospect and the
+	 * 			 warehouse's internal statistics and lead algorithms.
+	 * @param prospect the Customer in question.
+	 * @return A list of cars ordered by price.
+	 * @throws WarehouseEmptyException if the warehouse inventory is empty.
+	 */
+	public List<Car> getRecommendedCars( Customer prospect )
+	throws WarehouseEmptyException
+	{
+		return recommendCars( prospect );
 	}
 	
 	/**
@@ -149,5 +164,77 @@ public class CarWarehouse {
 	 */
 	public int getAvailableSpaces( CarSize size ){
 		return warehouseCapacity.get(size) - warehouseSpacesUsed.get(size);
+	}
+	
+	/**
+	 * Get the total number of cars in the warehouse inventory
+	 * @return the total number of cars that the warehouse contains.
+	 */
+	public int getTotalWarehouseCars(){
+		
+		int total = 0;
+		
+		for( CarSize size : CarSize.values() ){
+			int totalForSize = warehouseSpacesUsed.get(size);
+			total += totalForSize;
+		}
+		
+		return total;
+	}
+	
+	/* *********************** PRIVATE **************************************/
+	
+	private List<Car> recommendCars( Customer prospect )
+	throws WarehouseEmptyException
+	{	
+		int totalRecommendations = 0;
+		int totalCars = getTotalWarehouseCars();
+		if( totalCars == 0 )
+			throw new WarehouseEmptyException();
+		
+		
+		if( totalCars < 3 ){
+			totalRecommendations = totalCars;
+		}else{
+			
+			// Just a random even / odd check based on timestamp
+			int timestamp = (int) (System.currentTimeMillis() / 1000L);
+			if( (timestamp & 1) == 0 )
+				totalRecommendations = 2;
+			else
+				totalRecommendations = 3;
+		}
+			
+		List<Car> recommendations = getFirstCars( totalRecommendations );
+		Collections.sort(recommendations);
+		
+		return recommendations;
+		
+	}
+	
+	/* 
+	 * Return the first n cars that are found in the warehouse inventory.
+	 * @param numberOfCars the number of cars to return.  If there are less
+	 * 		 than numberOfCars in the inventory, the full inventory will be
+	 * 		 returned.
+	 * @return a list of cars.
+	 * @notes this method merely iterates until it finds the requested
+	 * 		number or cars.
+	 */
+	private List<Car> getFirstCars( int numberOfCars ){
+		
+		ArrayList<Car> firstCars = new ArrayList<Car>();
+		
+		for( CarMake make : CarMake.values() ){
+			ArrayList<Car> makeCars = warehouseInventory.get(make);
+			Iterator<Car> itr = makeCars.iterator();
+			while( itr.hasNext() ){
+				firstCars.add(itr.next());
+				if( firstCars.size() == numberOfCars )
+					return firstCars;
+			}
+		}
+		
+		return firstCars;
 	}
 }

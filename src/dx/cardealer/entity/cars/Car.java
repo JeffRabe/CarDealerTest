@@ -3,7 +3,7 @@ package dx.cardealer.entity.cars;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-public class Car {
+public class Car implements Comparable<Car> {
 
 	private int carId;			// DB serial ID (stubbed)
 	private CarMake make;
@@ -21,6 +21,29 @@ public class Car {
 		
 	}
 
+	/**
+	 * Return the name of the car in the form year, make, model --
+	 * 		e.g. "1999 Ford Taurus"
+	 * @return the string representation of the car name.
+	 */
+	public String getCarName(){
+		return year + " " + make + " " + model;
+	}
+	
+	/**
+	 * Implementation of Comparable.compareTo().  This compare implementation
+	 * only compares the car price.
+	 * @return -1, 0, 1 for less than, equal to, or more than respectively
+	 */
+	public int compareTo( Car other ){
+		if( other.getUsdPrice() == this.getUsdPrice() )
+			return 0;
+		
+		return other.getUsdPrice() < this.getUsdPrice() ? 1 : -1;
+	}
+	
+	/* ************* Getter / Setter **************************************/
+	
 	public int getCarId() {
 		return carId;
 	}
