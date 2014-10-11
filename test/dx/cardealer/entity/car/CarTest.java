@@ -1,4 +1,4 @@
-package dx.cardealer.entity;
+package dx.cardealer.entity.car;
 
 import org.junit.Test;
 

@@ -1,9 +1,14 @@
 package dx.cardealer.entity;
 
+import java.util.HashMap;
+
+import org.junit.Test;
+
 import dx.cardealer.entity.cars.Car;
 import dx.cardealer.entity.cars.CarColor;
 import dx.cardealer.entity.cars.CarMake;
 import dx.cardealer.entity.cars.CarSize;
+import dx.cardealer.error.WarehouseFullException;
 
 public class CarWarehouseTest {
 
@@ -24,4 +29,19 @@ public class CarWarehouseTest {
 				1981, CarColor.Green, 19000.00, CarSize.Large);
 	
 
+	/**
+	 * Test the case where a car is added when there is
+	 * no space in the warehouse for that car.  This shoul
+	 * cause an exception to be thrown.
+	 */
+	@Test( expected = WarehouseFullException.class)
+	public void addCarWithoutSpace_throwsException()
+	throws WarehouseFullException
+	{
+		
+		CarWarehouse warehouse = new CarWarehouse(
+				new HashMap<CarSize, Integer>());
+		
+		warehouse.addCar(honda);
+	}
 }

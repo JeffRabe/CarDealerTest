@@ -27,20 +27,22 @@ public class CarWarehouse {
 	public CarWarehouse( HashMap<CarSize, Integer> initialCapacities ){
 		
 		warehouseCapacity = new HashMap<CarSize, Integer>();
-		
+		warehouseSpacesUsed = new HashMap<CarSize, Integer>();
+		warehouseInventory = new HashMap<CarMake, ArrayList<Car>>();
 		for( CarSize size : CarSize.values() ){
 			if( !initialCapacities.containsKey(size) ){
 				warehouseCapacity.put( size, 0 );
-				//throw new IllegalArgumentException(
-				//		"The following car size was not represented: " + size );
+				
+			}else{
+			
+				int sizeCapacity = initialCapacities.get(size);
+				warehouseCapacity.put(size, sizeCapacity);
 			}
 			
-			int sizeCapacity = initialCapacities.get(size);
-			warehouseCapacity.put(size, sizeCapacity);
+			warehouseSpacesUsed.put(size, 0);
 		}
 		
-		warehouseSpacesUsed = new HashMap<CarSize, Integer>();
-		warehouseInventory = new HashMap<CarMake, ArrayList<Car>>();
+
 		for( CarMake make : CarMake.values() ){
 			warehouseInventory.put( make, new ArrayList<Car>() );
 		}
