@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 public class Car implements Comparable<Car> {
 
-	private int carId;			// DB serial ID (stubbed)
 	private CarMake make;
 	private String model;
 	private int year;
@@ -13,11 +12,15 @@ public class Car implements Comparable<Car> {
 	private double usdPrice;
 	private CarSize size;
 	
-	public Car( int id, CarMake make, String model, int year, 
+	public Car( CarMake make, String model, int year, 
 								CarColor color, double price, CarSize size){
-		this.carId = id;
-		this.make = make;
-		this.model = model;
+		setMake(make);
+		setModel(model);
+		setYear(year);
+		setColor(color);
+		setUsdPrice(price);
+		setSize(size);
+		
 		
 	}
 
@@ -43,18 +46,6 @@ public class Car implements Comparable<Car> {
 	}
 	
 	/* ************* Getter / Setter **************************************/
-	
-	public int getCarId() {
-		return carId;
-	}
-
-	public void setCarId(int carId) {
-		if( carId <= 0 ){
-			throw new IllegalArgumentException(
-					"carId must be an integer > 0: " + carId );
-		}
-		this.carId = carId;
-	}
 
 	public CarMake getMake() {
 		return make;

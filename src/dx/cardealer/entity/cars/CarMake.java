@@ -1,5 +1,5 @@
 package dx.cardealer.entity.cars;
 
 public enum CarMake {
-	Honda, Toyota, GeneralMoters, Ford, Mercedes, BMV, Ferrari, Tesla
+	Honda, Toyota, Chevrolet, Ford, Mercedes, BMW, Ferrari, Tesla
 }
