@@ -12,6 +12,17 @@ import dx.cardealer.entity.cars.CarSize;
 import dx.cardealer.error.WarehouseEmptyException;
 import dx.cardealer.error.WarehouseFullException;
 
+/**
+ * This class represents a car dealership warehouse that
+ * stores the dealership inventory.  
+ * 
+ * Currently the warehouse is merely responsible for storing
+ * the car inventory based different space for different sized
+ * cars, and also determining what cars a prospective or
+ * returning customer might want to purchase
+ * @author jrabe
+ *
+ */
 public class CarWarehouse {
 	
 	private HashMap<CarSize, Integer> warehouseSpacesUsed;

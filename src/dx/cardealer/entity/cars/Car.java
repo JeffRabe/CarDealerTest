@@ -3,6 +3,12 @@ package dx.cardealer.entity.cars;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
+/**
+ * This class represents an individual Car stored
+ * by a dealership.
+ * @author jrabe
+ *
+ */
 public class Car implements Comparable<Car> {
 
 	private CarMake make;

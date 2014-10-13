@@ -1,5 +1,11 @@
 package dx.cardealer.entity;
 
+/**
+ * This class represents a customer or prospect of the 
+ * car dealership / warehouse.
+ * @author Jeff Rabe
+ *
+ */
 public class Customer {
 	
 	private String firstName;
